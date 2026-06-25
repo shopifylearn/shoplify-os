@@ -1,0 +1,9 @@
+{
+"name":"Shopify OS",
+"short_name":"Shopify OS",
+"display":"standalone",
+"start_url":"./",
+"background_color":"#0b1220",
+"theme_color":"#16a34a",
+"icons":[]
+}
