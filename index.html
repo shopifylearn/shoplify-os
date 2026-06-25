@@ -1,14 +1,141 @@
+
 <!DOCTYPE html>
-<html><head>
-<meta charset="utf-8">
+<html>
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shopify OS V8 PWA</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#16a34a">
-</head><body>
-<h1>Shopify OS V8 PWA Starter</h1>
-<p>Upload these files to GitHub Pages.</p>
+<title>Shopify Agency OS V7 Mentor Edition</title>
+<style>
+body{margin:0;font-family:Arial;background:#0b1220;color:#e5e7eb}
+header{background:#16a34a;padding:16px;text-align:center}
+.wrap{max-width:1200px;margin:auto;padding:15px}
+.card{background:#111827;padding:15px;border-radius:12px;margin-bottom:12px}
+input,textarea,select{width:100%;padding:10px;border:none;border-radius:8px;margin:5px 0}
+button{background:#22c55e;border:none;padding:10px 14px;border-radius:8px;font-weight:bold;cursor:pointer}
+.barbox{height:18px;background:#1f2937;border-radius:9px;overflow:hidden}
+.bar{height:100%;width:0;background:#22c55e}
+</style>
+</head>
+<body>
+<header>
+<h1>Shopify Agency OS V7 - Mentor Edition</h1>
+<p>Learn • Build • Portfolio • Clients</p>
+</header>
+
+<div class="wrap">
+
+<div class="card">
+<h2>90-Day Command Center</h2>
+<input id="day" type="number" min="1" max="90" placeholder="Current Day">
+<div class="barbox"><div id="bar" class="bar"></div></div>
+<p id="progress"></p>
+<p id="phase"></p>
+</div>
+
+<div class="card">
+<h2>Today's Lesson</h2>
+<p><b>Lesson:</b> <span id="lesson"></span></p>
+<p><b>Tutorial:</b> <span id="tutorial"></span></p>
+<p><b>Assignment:</b> <span id="assignment"></span></p>
+<p><b>Deliverable:</b> <span id="deliverable"></span></p>
+</div>
+
+<div class="card">
+<h2>Quiz</h2>
+<p id="quiz"></p>
+<textarea id="quizAnswer" rows="3" placeholder="Answer here"></textarea>
+</div>
+
+<div class="card">
+<h2>Store Build Checklist</h2>
+<label><input type="checkbox"> Products Added</label><br>
+<label><input type="checkbox"> Collections Built</label><br>
+<label><input type="checkbox"> Navigation Complete</label><br>
+<label><input type="checkbox"> Homepage Complete</label><br>
+<label><input type="checkbox"> Mobile Optimized</label><br>
+<label><input type="checkbox"> Policies Added</label><br>
+<label><input type="checkbox"> Shipping Configured</label><br>
+<label><input type="checkbox"> Ready For Portfolio</label>
+</div>
+
+<div class="card">
+<h2>Weekly Plan (7–11 hrs)</h2>
+<ul>
+<li>2 hrs learning</li>
+<li>3 hrs store building</li>
+<li>2 hrs portfolio work</li>
+<li>1–4 hrs outreach (after Day 60)</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Client Playbook</h2>
+<textarea rows="8">Day 60+: Contact 10 businesses weekly.
+Offer store audits.
+Show portfolio stores.
+Ask discovery questions.
+Provide value before pitching.</textarea>
+</div>
+
+<div class="card">
+<h2>CRM</h2>
+<input id="lead" placeholder="Business">
+<input id="status" placeholder="Status">
+<button onclick="addLead()">Add Lead</button>
+<textarea id="crm" rows="8"></textarea>
+</div>
+
+<div class="card">
+<h2>Knowledge Vault</h2>
+<textarea id="notes" rows="10"></textarea>
+</div>
+
+</div>
+
 <script>
-if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js');}
+const lessons={
+1:["What is Shopify?","Understand ecommerce basics.","Create Partner account.","Partner account created.","What is Shopify used for?"],
+2:["Products","Learn product structure.","Add 5 products.","Products uploaded.","What makes a good product page?"],
+3:["Collections","Organize products.","Create collections.","Collections built.","Why use collections?"],
+4:["Themes","Learn theme customization.","Install Dawn.","Theme customized.","What is a theme?"],
+5:["Navigation","Build menus.","Create navigation.","Menu complete.","Why is navigation important?"]
+};
+
+function updateDay(){
+let d=Number(day.value||0);
+let pct=Math.min(d/90*100,100);
+bar.style.width=pct+'%';
+progress.innerText=pct.toFixed(1)+'% complete';
+
+let ph='Learning Shopify';
+if(d>30) ph='Portfolio Building';
+if(d>60) ph='Client Acquisition';
+phase.innerText='Phase: '+ph;
+
+let x=lessons[d]||["Continue Progress","Work on your store","Build something","Progress made","What did you learn today?"];
+lesson.innerText=x[0];
+tutorial.innerText=x[1];
+assignment.innerText=x[2];
+deliverable.innerText=x[3];
+quiz.innerText=x[4];
+
+localStorage.setItem('day',d);
+}
+
+function addLead(){
+crm.value += "\n"+lead.value+" | "+status.value;
+localStorage.setItem('crm',crm.value);
+}
+
+function load(){
+day.value=localStorage.getItem('day')||'';
+crm.value=localStorage.getItem('crm')||'';
+notes.value=localStorage.getItem('notes')||'';
+updateDay();
+}
+notes.addEventListener('input',()=>localStorage.setItem('notes',notes.value));
+day.addEventListener('input',updateDay);
+load();
 </script>
-</body></html>
+</body>
+</html>
